@@ -1,0 +1,13 @@
+{
+    "name": "esmi/es-method",
+    "description": "call php with method on a webpage.",
+    "type": "library",
+    "license": "mit",
+    "authors": [
+        {
+            "name": "esmi",
+            "email": "evansmile@gmail.com"
+        }
+    ],
+    "require": {}
+}
