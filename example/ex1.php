@@ -4,15 +4,13 @@ include_once "../src/iMethod.php";
 include_once "../src/method.php";
 include_once "../src/methodUtils.php";
 
+class ex1 extends methodUtils implements IMethod {
 
-class ex1 {
-
-    use methodUtils;
-    function echo($r) {
-        var_dump($r);
+    //use methodUtils;
+    function echo1($r) {
         return ($r);
     }
-    function get_data($r) {
+    function getdata($r) {
         return array(
             "status" => 'OK',
             'data' => 'this is data.'
@@ -20,23 +18,14 @@ class ex1 {
     }
 
     function allMethod() {
-        return  [
-            ["method" => "echo", "format" => "json", "data"],
-			["method" => "get_data", "format" => "json", "data"],
+        return  array(
+            array("method" => "echo1", "format" => "json", "data"),
+            array("method" => "echo1", "format" => "json", "data"),
+			array("method" => "getdata", "format" => "json", "data"),
 
 			//end element:
-			["method" => "notrun" ]
-        ];
-    }
-    function status($try=false) {
-        if ($try)
-            return parent::status();
-        else
-            return true;
-        //return parent::status();
-    }
-    function error() {
-        return parent::error();
+			array("method" => "notrun" )
+        );
     }
 }
 ?>
