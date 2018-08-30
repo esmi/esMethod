@@ -1,6 +1,8 @@
 <?php
-class methodUtils {
-    //methodUtils.php
+namespace Esmi\WebMethod;
+
+trait methodUtils
+{
     function format($r, $res) {
         if (isset($r['format'])) {
             $format = $r['format'];
@@ -18,37 +20,60 @@ class methodUtils {
         if (isset($r['format'])) {
             $format = $r['format'];
             if ( isset($r['echo'])) {
-                $echo = $r['echo'];
-                if ( $echo )
-                    $this->echoTarget($target, $format);
+            	$echo = $r['echo'];
+            	if ( $echo )
+		            $this->echoTarget($target, $format);
 
             }
             else {
 
-                $this->echoTarget($target, $format);
+	            $this->echoTarget($target, $format);
             }
         }
         else {
         }
 
     }
+    //
+    // isEcho:
+    //	$a = $cls->run();
+	//	
+	//	$r = $cls->getMethod();
+	//	if ( !($cls->isEcho($r)))
+	//				 ^^^^^^^^^^
+	//		$cls->echoTarget($a, 'json');
+	//
     function isEcho($r=null) {
-        if (!$r) {
-            $r = $this->getMethod();
-        }
+    	if (!$r) {
+    		$r = $this->getMethod();
+    	}
         if (isset($r['echo'])) {
-            return $r['echo'];
+        	return $r['echo'];
         }
         else
-            return true;
+        	return true;
 
     }
+	/*
+		if dont echo
+		$r = $cls->getMethod();
+
+		// $cls->setEcho() usage:
+		$r = $cls->setEcho(); 	// set echo to true,
+		$r = $cls->setEcho($r); // set echo to true.
+		$r = $cls->setEcho($r,false) // set echo to false.
+
+		// save run result.
+		$r = $cls->setEcho($r,false) // set echo to false.
+		$a = $cls->run();
+		$target['data1'] = $a;
+	*/    
     function setEcho($r=null,$f=true) {
-        if (!$r) {
-            $r = $this->getMethod();
-        }
-        $r['echo'] = $f;
-        return $r;
+    	if (!$r) {
+    		$r = $this->getMethod();
+    	}
+    	$r['echo'] = $f;
+    	return $r;
     }
     function echoTarget($target, $format) {
 
@@ -77,7 +102,7 @@ class methodUtils {
 
                 case "array":
                         if (isset($target['buffer']))
-                            echo $target['buffer'];
+                            echo $target['buffer']; 
                         else {
                             //echo "target['buffer] in not set....";
                             //var_dump( $target);
@@ -101,22 +126,34 @@ class methodUtils {
         }
     }
     function getMethod($rq=null) {
-        if (!$rq) {
-            $rq = $_REQUEST['method'];
-        }
-        foreach( $this->allMethod() as $r ) {
-            if ($r['method'] == $rq ) {
-                return $r;
+    	if (!$rq) {
+            if (!isset($_SERVER["HTTP_HOST"])) {
+                echo $argv[1] . "\r\n";
+                parse_str($argv[1], $_GET);
+                parse_str($argv[1], $_POST);
             }
+    		$rq = $_REQUEST['method'];
+            var_dump($_GET);
+            var_dump($_POST);
+            var_dump($_REQUEST);
+    	}
+        foreach( $this->allMethod() as $r ) {
+            if ( isset($r['method'])) {
+                if ($r['method'] == $rq ) {
+                    return $r;
+                }
+            }
+            else
+                break;
         }
         return null;
     }
     function error($err=null) {
-        if ( !$err ) {
-            return array('status' => 'error', 'message' => '有錯誤發生' );
-        }
-        else
-            return array( 'status' => 'error', 'message' => $err);
+    	if ( !$err ) {
+			return ['status' => 'error', 'message' => '有錯誤發生' ];
+    	}
+		else
+			return [ 'status' => 'error', 'message' => $err];
     }
 
     function status() 	 {  return true;    }
@@ -134,56 +171,56 @@ class methodUtils {
                 return $res;
             }
         }
-        return array('status' => 'error', 'message' =>"No such method:{$r['method']}");
+        return ['status' => 'error', 'message' =>"No such method:{$r['method']}"];
     }
 
     function run() {
 
-        if ( $this->status() ) {
+		if ( $this->status() ) {
 
-            $rq = isset( $_REQUEST['method']) ? $_REQUEST['method'] : '';
-            $r = $this->getMethod($rq);
-            //var_dump($r);
-            //var_dump($rq);
-            if ($r) {
+			$rq = isset( $_REQUEST['method']) ? $_REQUEST['method'] : '';
+			$r = $this->getMethod($rq);
+			//var_dump($r);
+			//var_dump($rq);
+			if ($r) {
 
-                $res =  $this->method($rq);
-                //var_dump($res);
-                if ($res) {
-                    if (isset($r['format']))
-                        $this->echo2($r, $res);
-                }
-                else {
-                    $d = $r['method'];
-                    $t = gettype($res);
-                    $c = get_class($this);
-                    $msg = "class[$c],method[$d]: return type($t)";
-                    $isEcho =  (isset($r['echo'])) ? $r['echo']: true;
+				$res =  $this->method($rq);
+				//var_dump($res);
+				if ($res) {
+					if (isset($r['format']))
+						$this->echo2($r, $res);
+				}
+				else {
+					$d = $r['method'];
+					$t = gettype($res);
+					$c = get_class($this);
+					$msg = "class[$c],method[$d]: return type($t)";
+					$isEcho =  (isset($r['echo'])) ? $r['echo']: true;
+					
+					if ( $isEcho )
+						$this->echo2(["format" => 'json'], $this->error( $msg ));
+				}
+				return $res;
+			}
+			else {
+				// not such method defined in class:
+				$c = get_class($this);
+				$res = [
+						'status' => "No such method", 
+						"message" => ("can't run '". $rq . "', method not defined in $c::allMethod().")
+					];
+				$this->echo2(["format" => 'json'], $res);
+				return $res;
 
-                    if ( $isEcho )
-                        $this->echo2(array("format" => 'json'), $this->error( $msg ));
-                }
-                return $res;
-            }
-            else {
-                // not such method defined in class:
-                $c = get_class($this);
-                $res = array(
-                        'status' => "No such method",
-                        "message" => ("can't run '". $rq . "', method not defined in $c::allMethod().")
-                    );
-                $this->echo2(array("format" => 'json'), $res);
-                return $res;
-
-            }
-        }
-        else {
-            $msg = "class[" . get_class($this) . "]: status() return false";
-            $res = $this->error($msg);
-            $this->echo2(array("format" => 'json'), $res);
-        }
-        return $res;
+			}
+		}
+		else {
+		    $msg = "class[" . get_class($this) . "]: status() return false";
+			$res = $this->error($msg);
+			$this->echo2(["format" => 'json'], $res);
+		}
+		return $res;
     }
 
 }
- ?>
+?>
