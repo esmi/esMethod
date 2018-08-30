@@ -8,5 +8,5 @@ $_REQUEST['data'] = array(
     'data2' => 'data2'
 );
 $cls->run();
-
+//echo test
 ?>
