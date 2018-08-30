@@ -5,9 +5,9 @@ include_once "../src/iMethod.php";
 include_once "../src/method.php";
 include_once "../src/methodUtils.php";
 
-class ex1 implements IMethod {
+class ex1 implements \Esmi\esMethod\IMethod {
 
-    use methodUtils;
+    use \Esmi\esMethod\methodUtils;
     function echo1($r) {
         return ($r);
     }

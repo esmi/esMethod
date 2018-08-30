@@ -1,4 +1,6 @@
 <?php
+namespace Esmi\esMethod;
+
 trait methodUtils
 {
     function format($r, $res) {
@@ -35,7 +37,7 @@ trait methodUtils
     //
     // isEcho:
     //	$a = $cls->run();
-	//	
+	//
 	//	$r = $cls->getMethod();
 	//	if ( !($cls->isEcho($r)))
 	//				 ^^^^^^^^^^
@@ -65,7 +67,7 @@ trait methodUtils
 		$r = $cls->setEcho($r,false) // set echo to false.
 		$a = $cls->run();
 		$target['data1'] = $a;
-	*/    
+	*/
     function setEcho($r=null,$f=true) {
     	if (!$r) {
     		$r = $this->getMethod();
@@ -100,7 +102,7 @@ trait methodUtils
 
                 case "array":
                         if (isset($target['buffer']))
-                            echo $target['buffer']; 
+                            echo $target['buffer'];
                         else {
                             //echo "target['buffer] in not set....";
                             //var_dump( $target);
@@ -125,12 +127,24 @@ trait methodUtils
     }
     function getMethod($rq=null) {
     	if (!$rq) {
+            if (!isset($_SERVER["HTTP_HOST"])) {
+                echo $argv[1] . "\r\n";
+                parse_str($argv[1], $_GET);
+                parse_str($argv[1], $_POST);
+            }
     		$rq = $_REQUEST['method'];
+            var_dump($_GET);
+            var_dump($_POST);
+            var_dump($_REQUEST);
     	}
         foreach( $this->allMethod() as $r ) {
-            if ($r['method'] == $rq ) {
-                return $r;
+            if ( isset($r['method'])) {
+                if ($r['method'] == $rq ) {
+                    return $r;
+                }
             }
+            else
+                break;
         }
         return null;
     }
@@ -182,7 +196,7 @@ trait methodUtils
 					$c = get_class($this);
 					$msg = "class[$c],method[$d]: return type($t)";
 					$isEcho =  (isset($r['echo'])) ? $r['echo']: true;
-					
+
 					if ( $isEcho )
 						$this->echo2(["format" => 'json'], $this->error( $msg ));
 				}
@@ -192,7 +206,7 @@ trait methodUtils
 				// not such method defined in class:
 				$c = get_class($this);
 				$res = [
-						'status' => "No such method", 
+						'status' => "No such method",
 						"message" => ("can't run '". $rq . "', method not defined in $c::allMethod().")
 					];
 				$this->echo2(["format" => 'json'], $res);

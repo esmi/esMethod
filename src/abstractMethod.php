@@ -1,4 +1,6 @@
 <?php
+namespace Esmi\esMethod;
+
 include_once "iMethod.php";
 include_once "methodUtils.php";
 
