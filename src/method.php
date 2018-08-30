@@ -1,6 +1,4 @@
 <?php
-namespace Esmi\WebMethod;
-
 include_once "iMethod.php";
 class Method {
 
@@ -31,15 +29,6 @@ class Method {
 		}
 	}
 
-    public static function isHttp($argv = null) {
-        if (!isset($_SERVER["HTTP_HOST"]) && (null !== $argv) ) {
-            echo "abc==========\r\n";
-            parse_str($argv[1], $_GET);
-            parse_str($argv[1], $_POST);
-            parse_str($argv[1], $_REQUEST);
-        }
-        echo "xyz==========\r\n";
-    }
 	function getData() {
 		return $this->data;
 	}

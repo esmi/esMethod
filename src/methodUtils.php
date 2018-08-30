@@ -1,6 +1,4 @@
 <?php
-namespace Esmi\WebMethod;
-
 trait methodUtils
 {
     function format($r, $res) {
@@ -127,24 +125,12 @@ trait methodUtils
     }
     function getMethod($rq=null) {
     	if (!$rq) {
-            if (!isset($_SERVER["HTTP_HOST"])) {
-                echo $argv[1] . "\r\n";
-                parse_str($argv[1], $_GET);
-                parse_str($argv[1], $_POST);
-            }
     		$rq = $_REQUEST['method'];
-            var_dump($_GET);
-            var_dump($_POST);
-            var_dump($_REQUEST);
     	}
         foreach( $this->allMethod() as $r ) {
-            if ( isset($r['method'])) {
-                if ($r['method'] == $rq ) {
-                    return $r;
-                }
+            if ($r['method'] == $rq ) {
+                return $r;
             }
-            else
-                break;
         }
         return null;
     }
