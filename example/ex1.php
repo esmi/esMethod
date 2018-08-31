@@ -5,7 +5,7 @@ use Esmi\EsMethod;
 
 class ex1 implements \Esmi\EsMethod\IMethod {
 
-    use \Esmi\esMethod\methodUtils;
+    use \Esmi\EsMethod\methodUtils;
     //use methodUtils;
     function echo1($r) {
         return ($r);
