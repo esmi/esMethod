@@ -1,4 +1,6 @@
 <?php
+require __DIR__ . '/../vendor/autoload.php';
+
 include_once "ex1.php";
 
 $cls = new ex1();

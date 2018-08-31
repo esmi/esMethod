@@ -1,9 +1,9 @@
 <?php
-//require __DIR__ . '/vendor/autoload.php';
-include_once "../src/abstractMethod.php";
-include_once "../src/iMethod.php";
-include_once "../src/method.php";
-include_once "../src/methodUtils.php";
+require __DIR__ . '/../vendor/autoload.php';
+// include_once "../src/abstractMethod.php";
+// include_once "../src/iMethod.php";
+// include_once "../src/method.php";
+// include_once "../src/methodUtils.php";
 
 class ex1 implements \Esmi\esMethod\IMethod {
 

@@ -9,5 +9,9 @@
             "email": "evansmile@gmail.com"
         }
     ],
-    "require": {}
+    "require": {},
+    "autoload": {
+        "psr-4": {"Esmi\\": "src/"}
+    }
+
 }
