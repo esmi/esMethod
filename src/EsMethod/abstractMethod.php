@@ -1,8 +1,8 @@
 <?php
-namespace Esmi\esMethod;
+namespace Esmi\EsMethod;
 
-include_once "iMethod.php";
-include_once "methodUtils.php";
+//include_once "iMethod.php";
+//include_once "methodUtils.php";
 
 interface allMethod {
     public function allMethod();

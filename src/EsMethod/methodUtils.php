@@ -1,5 +1,5 @@
 <?php
-namespace Esmi\esMethod;
+namespace Esmi\EsMethod;
 
 trait methodUtils
 {

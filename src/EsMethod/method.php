@@ -1,7 +1,7 @@
 <?php
-namespace Esmi\esMethod;
+namespace Esmi\EsMethod;
 
-include_once "iMethod.php";
+//include_once "iMethod.php";
 class Method {
 
 	protected $params;
