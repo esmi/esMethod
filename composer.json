@@ -1,5 +1,5 @@
 {
-    "name": "esmi/es-method",
+    "name": "esmi/esmethod",
     "description": "call php with method on a webpage.",
     "type": "library",
     "license": "mit",
